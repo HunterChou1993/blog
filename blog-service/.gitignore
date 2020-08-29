@@ -21,6 +21,11 @@ target/
 
 ### NetBeans ###
 /nbproject/private/
+
+.mvn
+.gitignore
+.mvnw
+mvnw.cmd
 /nbbuild/
 /dist/
 /nbdist/
