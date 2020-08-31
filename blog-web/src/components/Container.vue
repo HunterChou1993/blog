@@ -69,7 +69,7 @@
     },
     computed:{
       getArticleRecommend(){
-        return this.articleHot = this.articleHot[0] || [];
+        return  this.articleHot[0] || [];
       }
     },
     created(){
