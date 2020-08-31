@@ -18,9 +18,23 @@
         <!-- 热门文章开始 -->
         <div class="hot">
           <h3>热门文章</h3>
+          <ul>
+            <li v-for="(item,index) in articleHot">
+              <i>{{index + 1}}</i>
+              <a :href="item.articleId">{{item.title}}</a>
+            </li>
+          </ul>
         </div>
         <!--热门文章结束 -->
-        <div class="recommend"></div>
+        <div class="recommend">
+          <h3>顶置推荐</h3>
+          <ul>
+            <li v-if="!!getArticleRecommend.title">
+              <i>{{ 1}}</i>
+              <a :href="getArticleRecommend.articleId">{{getArticleRecommend.title}}</a>
+            </li>
+          </ul>
+        </div>
         <div class="visitor"></div>
       </el-aside>
     </el-container>
@@ -29,6 +43,7 @@
 
 <script>
   import {getTags} from "../api/tag";
+  import { getHotArticle} from "../api/article";
 
   export default {
     name: "Container",
@@ -39,7 +54,9 @@
         /* cover条的top数据 */
         coverTop:'',
         /* 分类 rticleList*/
-        articleTags:[]
+        articleTags:[],
+        /* 热门文章 */
+        articleHot:[]
       }
     },
     methods:{
@@ -50,10 +67,20 @@
         this.coverTop = 0;
       }
     },
+    computed:{
+      getArticleRecommend(){
+        return this.articleHot = this.articleHot[0] || [];
+      }
+    },
     created(){
       //从后端获取相关标签
       getTags().then(res => {
         this.articleTags = res.data.data;
+      })
+
+      //获取热门文章
+      getHotArticle().then(res => {
+        this.articleHot = res.data.data;
       })
     }
   }
@@ -154,7 +181,7 @@
           }
         }
         /*热门样式*/
-        >.hot{
+        >.hot,.recommend{
           box-sizing: border-box;
           width: 100%;
           background-color: #fff;
@@ -168,6 +195,45 @@
             color:#383937;
             position: relative;
             font-size: 18px;
+          }
+          ul {
+            margin-top: 15px;
+            li{
+              overflow: hidden;
+              height: 30px;
+              line-height: 30px;
+              margin: 7px 0;
+              a{
+                color:#787977;
+                font-size: 14px;
+              }
+              i{
+                display: inline-block;
+                width: 22px;
+                height: 22px;
+                background-color: #edefee;
+                text-shadow: 0 1px 0 rgba(255,255,255,.5);
+                color: #000;
+                font-style: normal;
+                font-size: 12px;
+                border-radius: 100%;
+                text-align: center;
+                line-height: 22px;
+                margin-right: 14px;
+              }
+              &:nth-child(1) i{
+                background-color: #e24d46;
+                color: #fff;
+              }
+              &:nth-child(2) i{
+                background-color: #2ea7e0;
+                color: #fff;
+              }
+              &:nth-child(3) i{
+                background-color: #6bc30d;
+                color: #fff;
+              }
+            }
           }
         }
       }
