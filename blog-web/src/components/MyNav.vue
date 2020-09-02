@@ -50,6 +50,8 @@
     height: 60px;
     background-color: #fff;
     border: 1px solid #e8e9e7;
+    position: fixed;
+    z-index: 1;
     /* 导航主体样式 */
     >.nav-main {
       box-sizing: border-box;

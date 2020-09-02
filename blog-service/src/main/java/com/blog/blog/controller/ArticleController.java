@@ -1,5 +1,8 @@
 package com.blog.blog.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.blog.blog.core.entity.ArticleEntity;
 import com.blog.blog.core.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +34,26 @@ public class ArticleController {
             return data;
         }
 
+    }
+
+    /**
+     * 查询两篇文章的信息
+     * @return
+     */
+    @GetMapping("/getArticleInfo")
+    public Map<String, Object> findArticle(Integer page, Integer size,Integer id){
+        Map<String, Object> data = new HashMap<>();
+        //创建查询条件
+        QueryWrapper<ArticleEntity> queryWrapper = new QueryWrapper<>();
+        //如果id为了就查询全部
+        if(0 != id){
+            queryWrapper.eq("tag",id);
+        }
+        //默认为文章最新创建的
+        queryWrapper.orderByDesc("create_Date");
+        Page<ArticleEntity> page1 = new Page<>(page,size);
+        IPage<Map<String, Object>> mapIPage = articleService.pageMaps(page1,queryWrapper);
+        data.put("data",mapIPage);
+        return data;
     }
 }

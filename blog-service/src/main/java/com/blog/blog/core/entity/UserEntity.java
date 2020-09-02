@@ -8,45 +8,39 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
-@TableName("article")
-public class ArticleEntity implements Serializable{
+@TableName("user")
+public class UserEntity implements Serializable{
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 文章ID
+     * 用户id
      */
     @TableId
-    private Integer articleId;
+    private Integer userId;
 
     /**
-     * 文章题目
+     * 用户名
      */
-    private String title;
+    private String name;
+
+    /**
+     * 用户头像
+     */
+    private String image;
+
+    /**
+     * 用户密码
+     */
+    private String password;
 
     /**
      * 创建时间
      */
-    private Date createDate;
+    private Date createTime;
 
     /**
-     * 图片路径
+     * 登录时间
      */
-    private String image;
-
-
-    /**
-     * 文章内容
-     */
-    private String content;
-
-    /**
-     * 文章浏览数
-     */
-    private Integer pv;
-
-    /**
-     * 文章标签
-     */
-    private Integer tag;
+    private Date logintime;
 }

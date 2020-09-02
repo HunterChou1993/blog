@@ -5,4 +5,5 @@
     <select id="selectHotArticle" resultType="com.blog.blog.core.entity.ArticleEntity">
          select article_Id as articleId,title as title,pv as pv from article ORDER by pv DESC LIMIT 0,7
     </select>
+
 </mapper>

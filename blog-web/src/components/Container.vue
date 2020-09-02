@@ -3,16 +3,16 @@
     <el-container>
       <el-main></el-main>
       <el-aside>
-        <div class="search">
+        <div :class="['search',{'fixed':ifSearchFixed}]">
           <div class="search-main">
             <el-input v-model="searchInput" placeholder="请输入内容"></el-input>
             <i class="el-icon-search"></i>
           </div>
           <div class="search-articleList">
             <ul @mouseleave="handleLeave">
-              <li @mouseenter="handleEnter" v-for="item in articleTags"><a href="">{{item}}</a></li>
+              <li @mouseenter="handleEnter(index)" v-for="(item,index ) in articleTags"><router-link :to="'/blog/'+index">{{item}}</router-link></li>
             </ul>
-            <div class="cover" :style="{top:coverTop + 'px'}"></div>
+            <div class="cover" :style="{top:coverTop*40 + 'px'}"></div>
           </div>
         </div>
         <!-- 热门文章开始 -->
@@ -35,7 +35,14 @@
             </li>
           </ul>
         </div>
-        <div class="visitor"></div>
+        <div class="visitor">
+          <h3>最近访客</h3>
+          <ul>
+            <li v-for="item in visitor" :style="{backgroundImage:`url(${item.image})`}">
+              <p>{{item.name}}</p>
+            </li>
+          </ul>
+        </div>
       </el-aside>
     </el-container>
   </div>
@@ -44,6 +51,7 @@
 <script>
   import {getTags} from "../api/tag";
   import { getHotArticle} from "../api/article";
+  import { getUserInfo } from "../api/userInfo";
 
   export default {
     name: "Container",
@@ -52,19 +60,26 @@
         /* input搜索框 v-model */
         searchInput:'',
         /* cover条的top数据 */
-        coverTop:'',
+        coverTop:this.$route.params.id*1,
         /* 分类 rticleList*/
         articleTags:[],
         /* 热门文章 */
-        articleHot:[]
+        articleHot:[],
+        /* 最近访客数据 */
+        visitor:[],
+        /* 控制search的class名字 */
+        ifSearchFixed:false
       }
     },
     methods:{
-      handleEnter(e){
-        this.coverTop = e.target.offsetTop;
+      handleEnter(index){
+        this.coverTop = index;
       },
       handleLeave(){
-        this.coverTop = 0;
+        this.coverTop = this.$route.params.id * 1;
+      },
+      handleWindowScroll(){
+        this.ifSearchFixed = document.documentElement.scrollTop >= 900;
       }
     },
     computed:{
@@ -82,6 +97,18 @@
       getHotArticle().then(res => {
         this.articleHot = res.data.data;
       })
+      //获取最近访问的信息
+      getUserInfo().then(res => {
+        this.visitor = res.data.data;
+      })
+    },
+    mounted(){
+      /* 监听滚动 */
+      window.addEventListener("scroll",this.handleWindowScroll)
+    },
+    /* 离开之后就清除滚动事件 */
+    destroyed(){
+      window.removeEventListener("scroll",this.handleWindowScroll)
     }
   }
 </script>
@@ -95,8 +122,7 @@
       box-sizing: border-box;
       width: 100%;
       max-width: 1360px;
-      margin: 0 auto;
-      padding: 0 50px;
+      margin: 70px auto 0;
       /* 右边栏样式 */
       >.el-aside {
         width: 300px;
@@ -106,6 +132,28 @@
           width: 100%;
           background-color: #fff;
           padding-bottom: 20px;
+          &.fixed {
+            position: fixed;
+            width: 300px;
+            z-index: 3;
+            animation: searchMove .5s 1 ease-in-out;
+            animation-fill-mode: forwards;
+          }
+          /* 添加动画 */
+          @keyframes searchMove{
+            0%{
+              top:-500px;
+            }
+            40% {
+              top:81px
+            }
+            65%{
+              top:60px
+            }
+            100%{
+              top:81px;
+            }
+          }
           /* 搜索框主要内容样式 */
           .search-main {
             box-sizing: border-box;
@@ -233,6 +281,57 @@
                 background-color: #6bc30d;
                 color: #fff;
               }
+            }
+          }
+        }
+        >.visitor {
+          box-sizing: border-box;
+          width: 100%;
+          background-color: #fff;
+          padding: 20px;
+          margin-top: 20px;
+          h3{
+            padding: 0 5px 10px;
+            line-height: 30px;
+            font-weight: 400;
+            border-bottom: 1px solid #e8e9e7;
+            color:#383937;
+            position: relative;
+            font-size: 18px;
+          }
+          ul {
+            margin-top: 15px;
+            li {
+              position: relative;
+              float: left;
+              width: 23%;
+              height: 60px;
+              background-position: center top;
+              background-size: cover;
+              background-repeat: no-repeat;
+              margin: 1%;
+
+              p {
+                overflow: hidden;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                line-height: 20px;
+                height: 20px;
+                text-align: center;
+                color: #fff;
+                font-size: 12px;
+                background-color: rgba(0,0,0,.3);
+              }
+            }
+            /*清除浮动*/
+            &::after{
+              display: block;
+              content: '';
+              width: 0;
+              height: 0;
+              clear: both;
             }
           }
         }
