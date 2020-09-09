@@ -14,12 +14,13 @@ export const getHotArticle = ()=>
  * 获取两篇文章接口
  * @returns {AxiosPromise}
  */
-export const getArticle = (page,size) =>
+export const getArticle = (page,size,id) =>
     request({
       url:'/article/getArticleInfo',
       methods: 'get',
       params:{
         page:page,
-        size:size
+        size:size,
+        id:id
       }
     })

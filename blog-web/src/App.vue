@@ -9,7 +9,6 @@
   @import "assets/css/font.css";
   #app {
     width: 100%;
-    height: 3000px;
     background-color: #DDD;
   }
 </style>

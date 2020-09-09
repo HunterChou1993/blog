@@ -14,4 +14,13 @@ public interface ArticleService extends IService<ArticleEntity>{
 
     public List<ArticleEntity> selectHotArtcile();
 
+    /**
+     * 首页查询文章接口
+     * @param page 页数
+     * @param size 每次查询多少条
+     * @param id 标签的id
+     * @return
+     */
+    public IPage<Map<String, Object>> selectArticleByLimit(Integer page, Integer size, Integer id);
+
 }

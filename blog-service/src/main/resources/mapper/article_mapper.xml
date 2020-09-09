@@ -6,4 +6,14 @@
          select article_Id as articleId,title as title,pv as pv from article ORDER by pv DESC LIMIT 0,7
     </select>
 
+    <!--首页查询文章的sql-->
+    <select id="selectArticleByLimit" resultType="com.blog.blog.core.entity.ArticleEntity">
+        select article_id as articleId,title,create_date as createDate,image,content,tag,pv,type from article
+        <where>
+            <if test="tag != null and tag != 0">
+                tag = #{tag}
+            </if>
+        </where>
+        ORDER by create_date DESC
+    </select>
 </mapper>

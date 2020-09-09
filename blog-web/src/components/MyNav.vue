@@ -63,7 +63,6 @@
       /* 左边Logo样式 */
       .nav-main-logo {
         float: left;//浮动属性
-        width: 150px;
         height: 60px;
         line-height: 60px;//行高为了垂直居中
         text-align: center;

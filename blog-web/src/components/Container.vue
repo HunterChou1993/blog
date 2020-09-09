@@ -1,7 +1,9 @@
 <template>
   <div id="Container">
     <el-container>
-      <el-main></el-main>
+      <el-main>
+        <Article></Article>
+      </el-main>
       <el-aside>
         <div :class="['search',{'fixed':ifSearchFixed}]">
           <div class="search-main">
@@ -49,6 +51,7 @@
 </template>
 
 <script>
+  import Article from './Article'
   import {getTags} from "../api/tag";
   import { getHotArticle} from "../api/article";
   import { getUserInfo } from "../api/userInfo";
@@ -60,7 +63,7 @@
         /* input搜索框 v-model */
         searchInput:'',
         /* cover条的top数据 */
-        coverTop:this.$route.params.id*1,
+        coverTop:this.$route.params.id * 1,
         /* 分类 rticleList*/
         articleTags:[],
         /* 热门文章 */
@@ -109,20 +112,32 @@
     /* 离开之后就清除滚动事件 */
     destroyed(){
       window.removeEventListener("scroll",this.handleWindowScroll)
+    },
+    components:{
+      Article
     }
   }
 </script>
 
 <style scoped lang="less">
   #Container {
+    box-sizing: border-box;
+    margin: 0 auto;
     padding-top: 20px;
     width: 100%;
+    padding-left: 50px;
+    max-width: 1360px;
     user-select: none;
     >.el-container {
       box-sizing: border-box;
       width: 100%;
       max-width: 1360px;
       margin: 70px auto 0;
+      /*去除elementUI的Main的padding*/
+      >.el-main{
+        padding-top: 0;
+        padding-left: 0;
+      }
       /* 右边栏样式 */
       >.el-aside {
         width: 300px;
@@ -254,6 +269,10 @@
               a{
                 color:#787977;
                 font-size: 14px;
+                &:hover {
+                  color:#6bc30d;
+                  text-decoration: underline;
+                }
               }
               i{
                 display: inline-block;

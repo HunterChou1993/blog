@@ -49,4 +49,9 @@ public class ArticleEntity implements Serializable{
      * 文章标签
      */
     private Integer tag;
+
+    /**
+     * 文章类型
+     */
+    private String type;
 }

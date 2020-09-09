@@ -21,4 +21,18 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao,ArticleEntity> im
         return article;
     }
 
+    /**
+     * 首页查询文章接口
+     * @param page 页数
+     * @param size 每次查询多少条
+     * @param size 每次查询多少条
+     * @return
+     */
+    @Override
+    public IPage<Map<String, Object>> selectArticleByLimit(Integer page, Integer size, Integer id) {
+        Page<ArticleEntity> page1 = new Page<>(page,size);
+        IPage<Map<String, Object>> data = this.baseMapper.selectArticleByLimit(page1,id);
+        return data;
+    }
+
 }
